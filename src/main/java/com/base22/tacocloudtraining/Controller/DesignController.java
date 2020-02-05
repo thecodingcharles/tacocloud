@@ -6,7 +6,9 @@ import com.base22.tacocloudtraining.Model.Taco;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 
 import com.base22.tacocloudtraining.Model.Ingredient.Type;
 
+import javax.validation.Valid;
+
 
 @Slf4j
 @Controller
@@ -23,9 +27,11 @@ import com.base22.tacocloudtraining.Model.Ingredient.Type;
 public class DesignController {
 
 
-    @GetMapping
-    public String showDesignForm(Model model){
 
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("design",new Taco());
         List<Ingredient> ingredients = Arrays.asList(
                 new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
                 new Ingredient("COTO", "Corn Tortilla", Type.WRAP),
@@ -44,21 +50,30 @@ public class DesignController {
         for (Type type : types) {
             model.addAttribute(type.toString().toLowerCase(),
                     ingredients.stream()
-                    .filter(c -> c.getType().equals(type))
-                    .collect(Collectors.toList()));
+                            .filter(c -> c.getType().equals(type))
+                            .collect(Collectors.toList()));
 
         }
 
-        model.addAttribute("design",new Taco());
+    }
+
+    @GetMapping
+    public String showDesignForm(Model model){
+
+
         return "design";
 
     }
 
 
     @PostMapping
-    public String processDesign(Taco design) {
+    public String processDesign(@Valid @ModelAttribute("design")  Taco design, Errors errors) {
         // Save the taco design...
         // We'll do this in chapter 3
+        if (errors.hasErrors()) {
+            return "design";
+        }
+
         log.info("Processing design: " + design);
         return "redirect:/orders/current";
     }
