@@ -6,29 +6,46 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Order {
 
-    @NotBlank(message="Name is required")
+
+    //@NotBlank(message="Name is required")
     private String name;
-    @NotBlank(message="Street is required")
+    //@NotBlank(message="Street is required")
     private String street;
-    @NotBlank(message="City is required")
+    //@NotBlank(message="City is required")
     private String city;
-    @NotBlank(message="State is required")
+    //@NotBlank(message="State is required")
     private String state;
-    @NotBlank(message="Zip is required")
+    //@NotBlank(message="Zip is required")
     private String zip;
 
-    @CreditCardNumber(message="Not a valid credit card number")
+    //@CreditCardNumber(message="Not a valid credit card number")
     private String ccNumber;
 
-    @Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",
-            message="Must be formatted MM/YY")
+    //@Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",
+            //message="Must be formatted MM/YY")
     private String ccExpiration;
 
-    @Digits(integer=3, fraction=0, message="Invalid CVV")
+    //@Digits(integer=3, fraction=0, message="Invalid CVV")
     private String ccCVV;
+
+    private Long id;
+    private Date placedAt;
+
+    public List<Taco> getTacos() {
+        return tacos;
+    }
+
+    public void setTacos(List<Taco> tacos) {
+        this.tacos = tacos;
+    }
+
+    private List<Taco> tacos =  new ArrayList<>();
 
     public String getName() {
         return name;
@@ -95,6 +112,24 @@ public class Order {
     }
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getPlacedAt() {
+        return placedAt;
+    }
+
+    public void setPlacedAt(Date placedAt) {
+        this.placedAt = placedAt;
+    }
+    public void addTaco(Taco taco){
+        this.tacos.add(taco);
+    }
 
     @Override
     public String toString() {
@@ -107,6 +142,9 @@ public class Order {
                 ", ccNumber='" + ccNumber + '\'' +
                 ", ccExpiration='" + ccExpiration + '\'' +
                 ", ccCVV='" + ccCVV + '\'' +
+                ", id=" + id +
+                ", placedAt=" + placedAt +
+                ", tacos=" + tacos +
                 '}';
     }
 }
