@@ -1,18 +1,30 @@
 package com.base22.tacocloudtraining.Model;
 
+
+import javax.persistence.*;
+
+@Entity
 public class Ingredient {
 
 
 
-    private final String id;
-    private final Type type;
-    private final String name;
+    @Id
+    private  String id;
+
+    @Column(columnDefinition = "varchar")
+    @Enumerated(EnumType.STRING)
+    private  Type type;
+    private  String name;
 
 
     public static enum Type{
         WRAP,PROTEIN,VEGGIES,CHEESE,SAUCE
     }
 
+
+    public Ingredient(){
+
+    }
 
     public Ingredient(String id,String name, Type type) {
         this.id = id;

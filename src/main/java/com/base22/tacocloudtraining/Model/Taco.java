@@ -1,11 +1,14 @@
 package com.base22.tacocloudtraining.Model;
 
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
+
+@Entity
 public class Taco {
 
 
@@ -14,11 +17,13 @@ public class Taco {
     private String name;
 
 
+    @ManyToMany(targetEntity=Ingredient.class,cascade = CascadeType.REMOVE)
     @Size(min=1, message="You must choose at least 1 ingredient")
     @NotNull
     private List<Ingredient> ingredients;
 
-
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private Date createdAt;
 
@@ -55,6 +60,12 @@ public class Taco {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+
+    @PrePersist
+    void createdAt() {
+        this.createdAt = new Date();
     }
 
 
