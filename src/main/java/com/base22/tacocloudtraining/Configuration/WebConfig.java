@@ -1,4 +1,4 @@
-package com.base22.tacocloudtraining.Controller.Configuration;
+package com.base22.tacocloudtraining.Configuration;
 
 
 import org.springframework.context.annotation.Configuration;
